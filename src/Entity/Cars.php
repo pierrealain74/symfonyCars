@@ -59,8 +59,6 @@ class Cars
     #[Assert\LessThan(10500000)]
     private ?int $Price = null;
 
-
-
     #[ORM\Column(nullable: true)]
     #[Assert\Positive()]
     private ?int $NbDoor = null;

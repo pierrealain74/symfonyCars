@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mes annonces Voitures{% endblock %}
+{% block title %}Les annonces Voitures{% endblock %}
 
 {% block body %}
 
-<div class="container mt-4">
-    <h1>Mes annonces de voitures</h1>
+<div class="container">
+    <h1>Annonces de voitures</h1>
 
     {# read and display just one flash message type #}
     {% for message in app.flashes('success') %}
@@ -13,45 +13,39 @@
           {{ message }}
       </div>
     {% endfor %}
+      <div class="wrapper">
+      {% if cars is not empty %}
 
+        {% for car in cars %}
+        <div class="col-lg-4">
+              <div class="card mb-3">
+              <h3 class="card-header">{{ car.name }}</h3>
+              <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+              <rect width="100%" height="100%" fill="#868e96"></rect>
+              <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+              </svg>
+              <div class="card-body">
+              <p class="card-text">{{ car.description }}</p>
+              </div>
+              <ul class="list-group list-group-flush">
+              <li class="list-group-item">{{ car.power }}ch</li>
+              <li class="list-group-item">Contrôle technique : {{ car.CT ? 'ok' : 'not ok' }}</li>
+              <li class="list-group-item">{{ car.color.name }}</li>
+              </ul>              
+              <div class="card-footer text-muted">
+                  {{ car.price }}&euro;
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        
+    {% else %}
 
-    {% if cars is not empty %}
+    <p>Aucune voiture</p>
 
-            <table class="table table-hover">
-                <thead>
-                  <tr>
-                    <th scope="col">ID voiture</th>
-                    <th scope="col">Nom voiture</th>
-                    <th scope="col">Prix</th>
-                    <th scope="col">Date création</th>
+    {% endif %}
 
-                  </tr>
-                </thead>
-                <tbody>
+      </div>
+    </div>
 
-                {% for car in cars %}
-
-                  <tr class="table-primary">
-                    <th scope="row">{{ car.id }}</th>
-                    <td>{{ car.name }}</td>
-                    <td>{{ car.price }}</td>
-                    <td>{{ car.DateCreation|date('d/m/Y') }}</td>
-                    <td><a href="#"><button type="button" class="btn btn-success">edit</button></a></td>
-                    <td><a href="#" onclick="return confirm('Voulez-vous vraiment supprimer cette voiture ?')"><button type="button" class="btn btn-danger">delete</button></a></td>
-
-                  </tr>
-
-                {% endfor %}
-
-                </tbody>
-              </table>
-
-            {# display navigation #}
-{#             <div class="navigation">
-                {{ knp_pagination_render(ingredients) }}
-            </div> #}
-{% else %}
-<p>Aucune voitures</p>
-{% endif %}
-</div>
 {% endblock %}
