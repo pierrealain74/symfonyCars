@@ -1,3 +1,5 @@
+{% set smallWidth = '15ch' %}
+
 {% extends "base.html.twig" %}
 
 {% block title %}
@@ -11,9 +13,88 @@
 
 		{{ form_start(form) }}
 
+			<div class="form-group">
+				{{ form_label(form.name) }}
+				{{ form_widget(form.name)}}
+				<div class="form-error">
+					{{ form_errors(form.name) }}
+				</div>
+			</div>
+			
+			<div class="form-group">
+				{{ form_label(form.description) }}
+				{{ form_widget(form.description) }}
+				<div class="form-error">
+					{{ form_errors(form.description) }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.power) }}
+				{{ form_widget(form.power, {'attr': {'style': 'width: ' ~ smallWidth}}) }}
+				<div class="form-error">
+					{{ form_errors(form.power) }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.price) }}
+				{{ form_widget(form.price, {'attr': {'style': 'width: ' ~ smallWidth}}) }}
+				<div class="form-error">
+					{{ form_errors(form.price) }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.energy) }}
+				{{ form_widget(form.energy, {'attr': {'style': 'width: ' ~ smallWidth}}) }}
+				<div class="form-error">
+					{{ form_errors(form.energy) }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.ct) }}
+				{{ form_widget(form.ct) }}
+				<div class="form-error">
+					{{ form_errors(form.ct) }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.adress_product) }}
+				{{ form_widget(form.adress_product) }}
+				<div class="form-error">
+					{{ form_errors(form.adress_product) }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.brand) }}
+				{{ form_widget(form.brand, {'attr': {'style': 'width: ' ~ smallWidth}}) }}
+				<div class="form-error">
+					{{ form_errors(form.brand) }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.color) }}
+				{{ form_widget(form.color, {'attr': {'style': 'width: ' ~ smallWidth}}) }}
+				<div class="form-error">
+					{{ form_errors(form.color) }}
+				</div>
+			</div>
+
+			<div class="form-group">
+				{{ form_label(form.nb_door) }}
+				{{ form_widget(form.nb_door, {'attr': {'style': 'width: ' ~ smallWidth}}) }}
+				<div class="form-error">
+					{{ form_errors(form.nb_door) }}
+				</div>
+			</div>
 
 		{{ form_end(form) }}
-
+		
 	</div>
 
 </div>{% endblock %}

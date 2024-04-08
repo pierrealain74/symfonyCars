@@ -33,7 +33,7 @@ class CarsType extends AbstractType
                     'minlength' => '2',
                     'maxlength' => '255'
                 ],
-                'label' => 'Nom',
+                'label' => 'Titre de l\'annonce',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
@@ -43,7 +43,6 @@ class CarsType extends AbstractType
 
                 ]
             ])
-
             ->add('power', IntegerType::class, [
                 'attr' => [
                     'class' => 'form-control',
@@ -85,7 +84,7 @@ class CarsType extends AbstractType
             ])
             ->add('energy', EntityType::class, [
                 'attr' => [
-                    'class' => 'form-control',
+                    'class' => 'form-select',
                 ],
                 'class' => Energy::class,
                 'choice_label' => 'name',
@@ -94,7 +93,7 @@ class CarsType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
             ])
-            ->add('nbdoor', IntegerType::class, [
+            ->add('nb_door', IntegerType::class, [
                 'attr' => [
                     'class' => 'form-control',
                 ],
@@ -106,20 +105,29 @@ class CarsType extends AbstractType
                     new Assert\Positive(),
                 ]
             ])
-            ->add('CT', CheckboxType::class, [
+            ->add('ct', CheckboxType::class, [
                 'attr' => [
-                    'class' => 'form-check-input',
+                    'class' => 'form-check-input mt-4',
                 ],
                 'label' => 'Contrôle technique',
                 'required' => false,
                 'label_attr' => [
-                    'class' => 'mt-4'
+                    'class' => 'form-label  mt-4'
                 ],
             ])
-            ->add('AdressProduct')
-            ->add('color', EntityType::class, [
+            ->add('adress_product', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
+                ],
+                'label' => 'Adresse où se trouve le bien',
+                'required' => true,
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+            ])
+            ->add('color', EntityType::class, [
+                'attr' => [
+                    'class' => 'form-select',
                 ],
                 'class' => Color::class,
                 'choice_label' => 'name',
@@ -130,8 +138,15 @@ class CarsType extends AbstractType
             ])
 
             ->add('brand', EntityType::class, [
+                'attr' => [
+                    'class' => 'form-select',
+                ],
                 'class' => Brand::class,
-                'choice_label' => 'id',
+                'choice_label' => 'name',
+                'label' => 'Marque',
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
