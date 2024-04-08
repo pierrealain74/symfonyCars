@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Accueil | Symfony Cars{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="jumbotron mt-4">
+
+            <h1 class="display-4">Bienvenue sur l'accueil des petites annonces</h1>
+            <p class="lead">Les dernières annonces</p>
+            <hr class="my-4">
+
+            {% if cars is not empty %}
+
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Couleur</th>
+                    <th scope="col">Puissance</th>
+                    <th scope="col">Marque</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+
+                {% for car in cars %}
+
+                <tr class="table-primary">
+                    <th scope="row">{{ car.id }}</th>
+                    <td>{{ car.name }}</td>
+                    <td>{{ car.color }}</td>
+                    <td>{{ car.power }}ch</td>
+                    <td>{{ car.brand.name }}</td>
+                </tr>
+                    
+                {% endfor %}
+
+            {% else %}
+            <p>Aucune annonce</p>
+            {% endif %}
+
+        </div>
+
+    </div>
+{% endblock %}
