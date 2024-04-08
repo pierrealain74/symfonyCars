@@ -10,12 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity(repositoryClass: CarsRepository::class)]
-#[UniqueEntity('name')]
-
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CarsRepository")
- * @UniqueEntity(fields={"name"}, message="Ce nom de produit est déjà utilisé.")
- */
 
 class Cars
 {
@@ -27,7 +21,7 @@ class Cars
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 2, max:255)]
     #[Assert\NotBlank()]
-    private ?string $Name = null;
+    private ?string $name = null;
 
 
     #[ORM\ManyToOne(inversedBy: 'Cars')]
@@ -69,7 +63,6 @@ class Cars
 
     #[ORM\Column(nullable: true)]
     #[Assert\Positive()]
-    #[Assert\Length(min: 3, max:8)]
     private ?int $NbDoor = null;
 
     #[ORM\Column(nullable: true)]
@@ -78,7 +71,11 @@ class Cars
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $AdressProduct = null;
 
-
+    public function __construct()
+    {
+        $this->DateCreation = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -87,12 +84,12 @@ class Cars
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): static
+    public function setName(string $name): static
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
@@ -243,5 +240,9 @@ class Cars
         $this->AdressProduct = $AdressProduct;
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->name;
     }
 }

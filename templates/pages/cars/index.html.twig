@@ -28,17 +28,21 @@
                   </tr>
                 </thead>
                 <tbody>
+
                 {% for car in cars %}
+
                   <tr class="table-primary">
                     <th scope="row">{{ car.id }}</th>
                     <td>{{ car.name }}</td>
                     <td>{{ car.price }}</td>
-                    <td>{{ car.dateCreated|date('d/m/Y') }}</td>
+                    <td>{{ car.DateCreation|date('d/m/Y') }}</td>
                     <td><a href="#"><button type="button" class="btn btn-success">edit</button></a></td>
                     <td><a href="#" onclick="return confirm('Voulez-vous vraiment supprimer cette voiture ?')"><button type="button" class="btn btn-danger">delete</button></a></td>
 
                   </tr>
+
                 {% endfor %}
+
                 </tbody>
               </table>
 
