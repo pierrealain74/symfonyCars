@@ -2,31 +2,34 @@
 
 namespace App\Form;
 
-use App\Entity\Brand;
 use App\Entity\Cars;
+use App\Entity\Brand;
 use App\Entity\Color;
 use App\Entity\Energy;
 
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\All;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class CarsType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            
+
             ->add('name', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
@@ -51,7 +54,7 @@ class CarsType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],
-                'constraints' => [                    
+                'constraints' => [
                     new Assert\Positive()
                 ]
             ])
@@ -148,13 +151,42 @@ class CarsType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
             ])
+            ->add('images', FileType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'label_attr' => [
+                    'class' => 'form-label mt-4'
+                ],
+                'multiple' => true,
+                'mapped' => false,
+                'required' => false,
+
+                'constraints' => [
+                    new All([
+                        'constraints' => [
+                            new File([
+                                'maxSize' => '3M',
+                                'mimeTypes' => [
+                                    'image/jpeg',
+                                    'image/png',
+                                    'image/gif',
+                                ],
+                                'mimeTypesMessage' => 'Veuillez télécharger une image valide (jpg, jpeg, png, gif)',
+                            ]),
+                        ],
+                    ]),
+                ],
+
+            ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary  mt-4',
                 ],
                 'label' => 'OK',
-            ])
-        ;
+            ]);
+
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

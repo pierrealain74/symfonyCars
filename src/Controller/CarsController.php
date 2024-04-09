@@ -3,10 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Cars;
+use App\Entity\Images;
 use App\Form\CarsType;
 use App\Repository\CarsRepository;
-use Doctrine\ORM\EntityManagerInterface;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -39,6 +40,22 @@ class CarsController extends AbstractController
          if ($form->isSubmitted() and $form->isValid()) {
  
              //dd($form->getData());
+
+            $images = $form->get('images')->getData();
+            foreach($images as $image){//on récupèuyre toutes les images
+
+                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                $image->move(
+                    $this->getParameter('images_directory'),
+                    $fichier
+                );
+
+                $img = new Images();
+                $img->setName($fichier);
+                $cars->addImage($img);
+                
+            }
+
              $cars = $form->getData();
              $manager->persist($cars);
              $manager->flush();

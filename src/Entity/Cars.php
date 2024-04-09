@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\CarsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Component\Validator\Constraints\Cascade;
 
 #[ORM\Entity(repositoryClass: CarsRepository::class)]
 
@@ -31,9 +33,6 @@ class Cars
     #[ORM\Column(nullable: true)]
     #[Assert\Positive()]
     private ?int $Power = null;
-
-    /* #[ORM\Column(length: 255, nullable: true)]
-    private ?string $Energy = null; */
 
     #[ORM\ManyToOne(inversedBy: 'Cars')]
     #[ORM\JoinColumn(nullable: false)]
@@ -69,10 +68,14 @@ class Cars
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $AdressProduct = null;
 
+    #[ORM\OneToMany(targetEntity: Images::class, mappedBy: 'cars', orphanRemoval: true, cascade: ['persist'])]//ajout du persist pour la cascade des images (si upload plusieures img)
+    private Collection $images;
+
     public function __construct()
     {
         $this->DateCreation = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -117,18 +120,6 @@ class Cars
 
         return $this;
     }
-
-    /*     public function getEnergy(): ?string
-    {
-        return $this->Energy;
-    }
-
-    public function setEnergy(?string $Energy): static
-    {
-        $this->Energy = $Energy;
-
-        return $this;
-    } */
 
     public function getEnergy(): ?Energy
     {
@@ -242,5 +233,35 @@ class Cars
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Images>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Images $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setCars($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Images $image): static
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getCars() === $this) {
+                $image->setCars(null);
+            }
+        }
+
+        return $this;
     }
 }

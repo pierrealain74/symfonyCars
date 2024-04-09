@@ -1,12 +1,13 @@
 .container{
-    padding: 4rem;
+    padding: 2rem;
 }
 form[name="cars"]{
     max-width: 50%;
     padding-bottom: 5rem;
 }
 .card{
-
+    width: 20rem;
+    height: 38rem;
 }
 .col-lg-4 {
     display: flex;
@@ -16,9 +17,10 @@ form[name="cars"]{
 
     display: flex;
     flex-wrap: wrap;
-    gap: 3rem;
-    padding: 4rem 0;
+    gap: 2rem;
 
-
-
+}
+.card img{
+    object-fit: cover;
+    height: 15rem;
 }
