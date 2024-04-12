@@ -1,49 +1,53 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
-{% block title %}Les annonces Voitures{% endblock %}
+{% block title %}Accueil | Symfony Cars{% endblock %}
 
 {% block body %}
+    <div class="container">
+        <div class="jumbotron mt-4">
 
-<div class="container">
-    <h1>Annonces de voitures</h1>
+            <h1 class="display-4">Bienvenue sur l'accueil des petites annonces</h1>
+            <p class="lead">Les dernières annonces</p>
+            <hr class="my-4">
 
-    {# read and display just one flash message type #}
-    {% for message in app.flashes('success') %}
-      <div class="alert alert-success mt-4">
-          {{ message }}
-      </div>
-    {% endfor %}
-      <div class="wrapper">
-      {% if cars is not empty %}
+            {% if cars is not empty %}
 
-        {% for car in cars %}
-          <div class="card">
-            {% if car.images|length > 0 %}
-              <img src="{{ asset('/uploads/' ~ car.images[0].name )}}" class="card-img-top" alt="images voiture">
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Couleur</th>
+                    <th scope="col">Puissance</th>
+                    <th scope="col">Marque</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+
+                {% for car in cars %}
+
+                <tr class="table-primary">
+                    <th scope="row">{{ car.id }}</th>
+                    <td>{{ car.name }}</td>
+                    <td>{{ car.color.name }}</td>
+                    <td>{{ car.power }}ch</td>
+                    <td>{{ car.brand.name }}</td>
+                    <td><a href="{{ path('cars.edit', {'id': car.id}) }}"><button type="button" class="btn btn-success">edit</button></a></td>
+                    <td>#</td>
+                </tr>
+                    
+                {% endfor %}
+
+            {% else %}
+            <p>Aucune annonce</p>
             {% endif %}
-            <div class="card-body">
-              <h5 class="card-title">{{ car.name }}</h5>
-              <p class="card-text">{{ car.description|slice(0, 50) }}</p>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">{{ car.power }}ch</li>
-              <li class="list-group-item">Contrôle technique : {{ car.CT ? 'Ok' : 'A faire' }}</li>
-              <li class="list-group-item">{{ car.color.name }}</li>
-              <li class="list-group-item">{{ car.price }}&euro;</li>
-            </ul>
-            <div class="card-body">
-              <a href="#" class="btn btn-primary"><i>Go!</i></a>
-            </div>
-          </div>
-        {% endfor %}
-        
-    {% else %}
 
-    <p>Aucune voiture</p>
+        </div>
 
-    {% endif %}
-
-      </div>
     </div>
-
 {% endblock %}
+
+

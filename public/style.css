@@ -5,7 +5,7 @@ form[name="cars"]{
     max-width: 50%;
     padding-bottom: 5rem;
 }
-.card{
+.card {
     width: 20rem;
     height: 38rem;
 }
@@ -20,7 +20,12 @@ form[name="cars"]{
     gap: 2rem;
 
 }
+
 .card img{
     object-fit: cover;
     height: 15rem;
+}
+.card > .nophoto{
+    
+    opacity: .2;
 }
