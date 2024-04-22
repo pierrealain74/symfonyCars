@@ -36,7 +36,8 @@ class CarsController extends AbstractController
      public function index(CarsRepository $repository, Request $request): Response
      {
 
-        $cars = $repository->findAll();
+        //$cars = $repository->findAll();
+        $cars = $repository->findBy([], ['DateCreation' => 'DESC']);
 
          return $this->render('pages/cars/index.html.twig', [
              'cars' => $cars
@@ -44,6 +45,34 @@ class CarsController extends AbstractController
 
 
      }
+
+
+
+
+
+
+
+     #[Route('/cars/detail/{id}', name: 'cars.detail', methods: ['GET', 'POST'])]
+     public function details(CarsRepository $repository, Request $request, int $id): Response
+     {
+
+        $cars = $repository->find($id);
+
+         return $this->render('pages/cars/detail.html.twig', [
+             'cars' => $cars
+         ]);
+
+
+     }
+
+
+
+
+
+
+
+
+
 
      #[Route('/cars/nouveau', name: 'cars.new', methods: ['GET', 'POST'])]
      public function new(Request $request, EntityManagerInterface $manager): Response
@@ -98,68 +127,68 @@ class CarsController extends AbstractController
          );
      }
 
-    #[Route('/cars/edit/{id}', name: 'cars.edit', methods: ['GET', 'POST'])]
-    public function edit(Cars $cars, Request $request, EntityManagerInterface $manager): Response
-    {
-
-        //paramConverter => id
-
-
-        //$cars = new Cars();
-    
-        $form = $this->createForm(CarsType::class, $cars);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() and $form->isValid()) {
-
-            $images = $form->get('images')->getData();
-            foreach($images as $image){//on récupèuyre toutes les images
-
-                $fichier = md5(uniqid()) . '.' . $image->guessExtension();
-                $image->move(
-                    $this->getParameter('images_directory'),
-                    $fichier
-                );
-
-                $img = new Images();
-                $img->setName($fichier);
-                $cars->addImage($img);
-                
-            }
-
-
-
-            //dd($form->getData());
-            $cars = $form->getData();
-            $manager->persist($cars);
-            $manager->flush();
-
-            $this->addFlash(
-                'success',
-                'Voiture correctement modifié :)'
-            );
-
-            return $this->redirectToRoute('cars.index');
-        } else {
-
-            $this->addFlash(
-                'notice',
-                'Voiture déjà modifiée ou donnée manquante :)'
-            );
-        }
-
-        return $this->render
-        (
-            'pages/cars/edit.html.twig',
-            [
-                'cars' => $cars,
-                'form' => $form->createView()
-                ]
-
-        );
-    }
-
+     #[Route('/cars/edit/{id}', name: 'cars.edit', methods: ['GET', 'POST'])]
+     public function edit(Cars $cars, Request $request, EntityManagerInterface $manager): Response
+     {
+ 
+         //paramConverter => id
+ 
+ 
+         //$cars = new Cars();
+     
+         $form = $this->createForm(CarsType::class, $cars);
+ 
+         $form->handleRequest($request);
+ 
+         if ($form->isSubmitted() and $form->isValid()) {
+ 
+             $images = $form->get('images')->getData();
+             foreach($images as $image){//on récupèuyre toutes les images
+ 
+                 $fichier = md5(uniqid()) . '.' . $image->guessExtension();
+                 $image->move(
+                     $this->getParameter('images_directory'),
+                     $fichier
+                 );
+ 
+                 $img = new Images();
+                 $img->setName($fichier);
+                 $cars->addImage($img);
+                 
+             }
+ 
+ 
+ 
+             //dd($form->getData());
+             $cars = $form->getData();
+             $manager->persist($cars);
+             $manager->flush();
+ 
+             $this->addFlash(
+                 'success',
+                 'Voiture correctement modifié :)'
+             );
+ 
+             return $this->redirectToRoute('cars.index');
+         } else {
+ 
+             $this->addFlash(
+                 'notice',
+                 'Voiture déjà modifiée ou donnée manquante :)'
+             );
+         }
+ 
+         return $this->render
+         (
+             'pages/cars/edit.html.twig',
+             [
+                 'cars' => $cars,
+                 'form' => $form->createView()
+                 ]
+ 
+         );
+     }
+ 
 /**
  * 
  * Delete une image d'un annonce Voiture
@@ -179,7 +208,7 @@ class CarsController extends AbstractController
     //PARAM CONVERTER Marche pas
 
 
-    
+
     //$data = json_decode($request->getContent(), true);
 
     // On vérifie si le token est valide
@@ -202,82 +231,12 @@ class CarsController extends AbstractController
 
         return $this->redirectToRoute('cars.edit', ['id' => $id]);
 
-        //return $this->render('edit.html.twig');
-    
-  /*       return $this->render
-        (
-            'pages/cars/edit.html.twig',
-            [
-                'id' => $id
-                ]
 
-        ); */
-        
-        //return $this->redirectToRoute('/cars/edit/' . $id);
 
-        // On répond en json
-        //return new JsonResponse(['success' => 1]);
-     
 }
 
 
 
 
- //public function deleteImg(Images $image, $imageId, $id)
- //{
-
-
-        //$car = $doctrine->getRepository(Cars::class)->find($id);
-
-        //$nom = $image->getName();
-        //var_dump($nom);
-        // On supprime le fichier
-        //unlink($this->getParameter('images_directory').'/'.$nom);
-
-        // On supprime l'entrée de la base
-       // $em = $doctrine->getManager();
-        //$em->remove($image);
-        //$em->flush();
-
-        //return new Response('Image supprimée avec succès', Response::HTTP_OK);
-
-/* 
-        $manager->remove($image);
-        $manager->flush();
-    
-        $this->addFlash(
-            'success',
-            'Image supprimé avec succès :)'
-        );
-    
-        return $this->redirectToRoute('cars.edit'); */
-
-
-
-
-
-     
-    //$car = $this->getDoctrine()->getRepository(Cars::class)->find($id);
-    //$image = $this->getDoctrine()->getRepository(Images::class)->find($imageId);
-
-    // Vérifier si l'image appartient à la voiture
-    /* if ($image && $image->getCar() === $car) {
-        // Supprimer l'image de la base de données
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($image);
-        $entityManager->flush();
-
-        
-        return new Response('Image supprimée avec succès', Response::HTTP_OK);
-    }
-
-    
-    return new Response('Impossible de supprimer l\'image', Response::HTTP_BAD_REQUEST); */
-
-
-    
-    
-
- //}
 
 }

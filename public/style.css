@@ -21,6 +21,7 @@ form[name="cars"]{
 
 }
 
+
 .card img{
     object-fit: cover;
     height: 15rem;
@@ -29,3 +30,10 @@ form[name="cars"]{
     
     opacity: .2;
 }
+
+.carousel-item img{
+    width: 45rem !important;
+    height: 35rem;
+    object-fit: cover;
+}
+

@@ -16,7 +16,7 @@ class HomeController extends AbstractController
     {
 
         //$cars = $repository->findByCarsWithBrand();
-       $cars = $repository->findAll();
+       $cars = $repository->findBy([], ['DateCreation' => 'DESC']);
         
         
         return $this->render('pages/home.html.twig',

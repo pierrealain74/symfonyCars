@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %} {% block title %}Une annonce de voiture en
+détail{% endblock %} {% block body %}
+
+<div class="container">
+  {% if cars is not empty %}
+
+  <h1>{{ cars.name }}</h1>
+
+{#   <div class="wrapper"> #}
+    {# {{ dump(cars) }} #}
+
+
+
+<div class="row">
+    <div class="col-md-6">
+    <div id="carouselExampleFade" class="carousel slide carousel-fade">
+      <div class="carousel-inner">
+        {% if cars.images|length > 0 %} {% for image in cars.images %}
+        <div class="carousel-item {% if loop.first %}active{% endif %}">
+          <img
+            src="{{ asset('/uploads/' ~ image.name )}}"  class="d-block w-100" alt="{{ cars.name }}"/>
+        </div>
+        {% endfor %} {% endif %}
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleFade"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleFade"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+
+
+    </div>
+    <div class="col-md-6">
+        <h3>{{ cars.description}}</h3>
+        <ul class="list-group">        
+        <li class="list-group-item">Marque : {{ cars.brand.name }}</li>
+        <li class="list-group-item">Prix : {{cars.price}}&euros;</li>
+        <li class="list-group-item">Moteur : {{cars.power}}ch</li>
+        <li class="list-group-item">Couleur : {{cars.color.name}}</li>
+        <li class="list-group-item">Energie : {{cars.energy.name}}</li>
+        <li class="list-group-item">Nombre de portes : {{cars.NbDoor}}</li>
+        <li class="list-group-item">Contrôle technique : {{ cars.CT ? 'Ok' : 'A faire' }}</li>
+      </ul>
+      <br />
+      
+      
+
+      <p>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+          Contacter le vendeur
+        </button>
+      </p>
+      <div style="min-height: 120px;">
+        <div class="collapse collapse-horizontal" id="collapseWidthExample">
+          <div class="card card-body" style="width: 300px; height: 320px;">
+            
+            
+
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Votre email</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Message</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-secondary" type="submit">Envoyer !</button>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+</div> {#endof Row div #}
+{% else %}
+
+<p>Aucune voiture</p>
+
+{% endif %}
+
+  </div> {#endof Wrapper div #}
+</div>
+
+{% endblock %}
