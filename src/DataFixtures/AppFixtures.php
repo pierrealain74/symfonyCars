@@ -26,9 +26,6 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
 
-
-        
-        
         for ($i = 0; $i < 10; $i++) {
             $user = new User();
             $user->setFullName($this->faker->name())
@@ -36,16 +33,9 @@ class AppFixtures extends Fixture
                 ->setEmail($this->faker->email())
                 ->setRoles(['ROLE_USER'])
                 ->setCreatedAt(new \DateTimeImmutable)
-                ->setUpdatedAt(new \DateTimeImmutable);
+                ->setUpdatedAt(new \DateTimeImmutable)
+                ->setPlainPassword('password');
 
-            $hashPassword = $this->hasher->hashPassword(
-                $user,
-                'password'
-            );
-
-                $user->setPassword($hashPassword);
-
-            $users[] = $user;
             $manager->persist($user);
         }
 
