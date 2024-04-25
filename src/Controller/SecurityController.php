@@ -13,6 +13,11 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+
+    /**
+     * For login user
+     * 
+     */
     #[Route('/connexion', name: 'security.login', methods: ['GET', 'POST'])]
     public function login(): Response
     {
@@ -21,12 +26,23 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    
+    /**
+     * For logout user
+     * 
+     */
+
     #[Route('/deconnexion', name: 'security.logout')]
     public function logout()
     {
         //nothing to do here its magic :)=
     }
 
+    
+    /**
+     * For subscription user
+     * 
+     */
     #[Route('/inscription', name: 'security.registration', methods: ['GET', 'POST'])]
     public function registration(Request $request, EntityManagerInterface $manager): Response
     {

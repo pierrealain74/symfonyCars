@@ -49,9 +49,6 @@ class CarsController extends AbstractController
 
 
 
-
-
-
      #[Route('/cars/detail/{id}', name: 'cars.detail', methods: ['GET', 'POST'])]
      public function details(CarsRepository $repository, Request $request, int $id): Response
      {
@@ -64,13 +61,6 @@ class CarsController extends AbstractController
 
 
      }
-
-
-
-
-
-
-
 
 
 

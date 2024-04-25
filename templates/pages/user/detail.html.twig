@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil utilisateur{% endblock %}
+
+{% block body %}
+<div class="container">
+
+		<h2>Bienvenue utilisateur : {{ user.fullName }}</h2>
+
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success mt-4">
+			{{ message }}
+			</div>
+  		{% endfor %}
+
+		<div class="card mt-4" style="width: 25rem; height: 25rem;">
+			<ul class="list-group list-group-flush">
+			  <li class="list-group-item">Id : {{ user.id }}</li>
+			  <li class="list-group-item">Email: {{ user.email }}</li>
+			  <li class="list-group-item">password : ******</li>
+			  <li class="list-group-item">Pseudo : {{ user.pseudo }}</li>
+			  <li class="list-group-item">Role : {% for role in user.roles %}{{ role }}{% endfor %}</li>
+			  <li class="list-group-item">Date de création : {{  user.createdAt|date('d F Y') }}</li>
+			  <li class="list-group-item">Derniere mise à jour : {{ user.updatedAt|date('d F Y')}}</li>
+			</ul>
+		  </div>
+
+</div>
+{% endblock %}
