@@ -71,6 +71,13 @@ class Cars
     #[ORM\OneToMany(targetEntity: Images::class, mappedBy: 'cars', orphanRemoval: true, cascade: ['persist'])]//ajout du persist pour la cascade des images (si upload plusieures img)
     private Collection $images;
 
+    #[ORM\ManyToOne(inversedBy: 'cars')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
+
+
+
     public function __construct()
     {
         $this->DateCreation = new \DateTimeImmutable();
@@ -261,6 +268,18 @@ class Cars
                 $image->setCars(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

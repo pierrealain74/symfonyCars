@@ -11,24 +11,39 @@
               <span class="visually-hidden">(current)</span>
             </a>
           </li>
+          {% if app.user %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Voitures</a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="{{ path('cars.index') }}">Liste des voitures</a>
-              <a class="dropdown-item" href="{{ path('cars.new') }}">Nouvelle voiture</a>
+              <a class="dropdown-item" href="{{ path('cars.index') }}">Mes voitures</a>
+              <a class="dropdown-item" href="{{ path('cars.new') }}">Ajouter une voiture</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="#">Parametres</a>
             </div>
           </li>
+          {% else %}
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Mon compte</a>
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="{{ path('security.registration') }}">Inscription</a>
                 <a class="dropdown-item" href="{{ path('security.login') }}">Login</a>
               </div>
-          </li>  
-          
+          </li>
+          {% endif %}          
         </ul>
+
+        <div class="mr-5">
+          {% if app.user %}
+            <button type="button" class="btn btn-primary">Vous êtes connecté : {{ app.user.fullName }}</button>
+            <div class="btn-group" role="group">
+              <button id="btnGroupDrop1" type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+              <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                <a class="dropdown-item" href="{{ path('security.logout') }}">Logout</a>
+              </div>
+            </div>          
+          {% else %} <button type="button" class="btn btn-outline-dark">Aucun user connecté</button>           
+          {% endif %}
+        </div>
         <form class="d-flex">
           <input class="form-control me-sm-2" type="search" placeholder="Search">
           <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>

@@ -38,7 +38,7 @@
                     <td><a href="{{ path('cars.edit', {'id': car.id}) }}"><button type="button" class="btn btn-success">edit</button></a></td>
                     <td>#</td>
                 </tr>
-                    
+                </tbody>    
                 {% endfor %}
 
             {% else %}
@@ -47,7 +47,13 @@
 
         </div>
 
+
+        <div class="navigation">
+            {{ knp_pagination_render(cars) }}
+        </div>
+
     </div>
+
 {% endblock %}
 
 

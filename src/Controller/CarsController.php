@@ -12,9 +12,11 @@ use App\Repository\ImagesRepository;
 use Doctrine\ORM\EntityManager;
 
 use App\Repository\CarsRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
-
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -33,14 +35,19 @@ class CarsController extends AbstractController
     } */
 
      #[Route('/cars/', name: 'cars.index')]
-     public function index(CarsRepository $repository, Request $request): Response
+     public function index(CarsRepository $repository, Request $request, PaginatorInterface $paginatorInterface): Response
      {
 
-        //$cars = $repository->findAll();
-        $cars = $repository->findBy([], ['DateCreation' => 'DESC']);
+        $data = $repository->findBy(['user' => $this->getUser()], ['DateCreation' => 'DESC']);
+
+        $cars = $paginatorInterface->paginate(
+            $data,
+            $request->query->getInt('page', 1), 
+            4
+        );
 
          return $this->render('pages/cars/index.html.twig', [
-             'cars' => $cars
+             'cars' => $cars,
          ]);
 
 
@@ -65,11 +72,11 @@ class CarsController extends AbstractController
 
 
      #[Route('/cars/nouveau', name: 'cars.new', methods: ['GET', 'POST'])]
-     public function new(Request $request, EntityManagerInterface $manager): Response
+     public function new(Request $request, EntityManagerInterface $manager, UserRepository $userRepository): Response
      {
          $cars = new Cars();
          $form = $this->createForm(CarsType::class, $cars);
- 
+
          $form->handleRequest($request);
 
          if ($form->isSubmitted() and $form->isValid()) {
@@ -77,7 +84,7 @@ class CarsController extends AbstractController
              //dd($form->getData());
 
             $images = $form->get('images')->getData();
-            foreach($images as $image){//on récupèuyre toutes les images
+            foreach($images as $image){
 
                 $fichier = md5(uniqid()) . '.' . $image->guessExtension();
                 $image->move(
@@ -91,7 +98,14 @@ class CarsController extends AbstractController
                 
             }
 
-             $cars = $form->getData();
+            $cars = $form->getData();
+            $cars->setUser($this->getUser());
+
+            /**Rajout Mika pour debug USER 
+            $user = $userRepository->find(1);*/
+            
+                        
+
              $manager->persist($cars);
              $manager->flush();
  
